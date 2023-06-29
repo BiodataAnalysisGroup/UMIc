@@ -11,8 +11,8 @@ library(pryr)
 
 rm(list = ls())
 
-source("R/casesWorkflows.R")
-source("R/functions.R")
+source("./casesWorkflows.R")
+source(".//functions.R")
 
 ########## Inputs ##########
 
@@ -24,7 +24,7 @@ pairedData <- TRUE
 UMIlocation <- "R1 & R2"
 
 #length of the UMI
-UMIlength <- 5
+UMIlength <- 12 #5
 
 #length of th sequence
 sequenceLength <- 150
@@ -33,21 +33,16 @@ sequenceLength <- 150
 countsCutoff <- 1
 
 #max UMI distance for UMI merging
-UMIdistance <- 1
+UMIdistance <- 4
 
 #max sequence distance for UMI correction
-sequenceDistance <- 10
+sequenceDistance <- 100
 
 #inputs folder / working directory
-inputsFolder <- "test/"
+inputsFolder <- "D:/UMICStuff/Ioannina_Stella/"
 
 #outputs folder
-outputsFolder <- paste(
-    str_replace_all(
-        str_split(Sys.time(), "\\ ", simplify = TRUE)[, 1:2], 
-        "\\:", "."
-    ), collapse = "_"
-)
+outputsFolder <- "D:/UMICStuff/Ioannina_Stella/OUT"
 
 ########## Run the appropriate scenario ##########
 
@@ -139,3 +134,4 @@ if (pairedData & UMIlocation == "R1"){   #case 1 -- paired data and UMI only in 
   }
  
 }  
+
