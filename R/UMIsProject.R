@@ -8,15 +8,17 @@ library(getopt)
 rm(list = ls())
 
 # Source files relative to the current script
-scriptPath = paste(getwd(), get_Rscript_filename(), sep="/")
-source(paste(dirname(scriptPath), "functions.R", sep="/"))
-source(paste(dirname(scriptPath), "casesWorkflows.R", sep="/"))
+scriptPath = get_Rscript_filename()
+functions = paste(dirname(scriptPath), "functions.R", sep="/")
+workflows = paste(dirname(scriptPath), "casesWorkflows.R", sep="/")
+source(functions)
+source(workflows)
 
 ########## Inputs ##########
 
 parser <- OptionParser()
-parser <- add_option(parser, "--pairedData", action="store_false", default=TRUE,
-                     help="type of data - paired or single")
+parser <- add_option(parser, "--pairedData", action="store_true", default=FALSE,
+                     help="The reads are paired-end")
 
 parser <- add_option(parser, "--UMIlocation", default="R1 & R2",
                      help="UMI location ('R1' or 'R1 & R2')")
