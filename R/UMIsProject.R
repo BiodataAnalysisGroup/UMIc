@@ -2,6 +2,63 @@
 
 
 ########## Loading libraries ########## 
+library(optparse)
+library(getopt)
+
+rm(list = ls())
+
+# Source files relative to the current script
+scriptPath = get_Rscript_filename()
+functions = paste(dirname(scriptPath), "functions.R", sep="/")
+workflows = paste(dirname(scriptPath), "casesWorkflows.R", sep="/")
+source(functions)
+source(workflows)
+
+########## Inputs ##########
+
+parser <- OptionParser()
+parser <- add_option(parser, "--pairedData", action="store_true", default=FALSE,
+                     help="The reads are paired-end")
+
+parser <- add_option(parser, "--UMIlocation", default="R1 & R2",
+                     help="UMI location ('R1' or 'R1 & R2')")
+
+parser <- add_option(parser, "--UMIlength", default=12,
+                     help="Length of the UMI")
+
+parser <- add_option(parser, "--sequenceLength", default=150,
+                     help="Length of the sequnce")
+
+parser <- add_option(parser, "--countsCutoff", default=1,
+                     help="Minimum read count per UMI, for initial data cleaning")
+
+parser <- add_option(parser, "--UMIdistance", default=4,
+                     help="Maximum UMI distance for UMI merging")
+
+parser <- add_option(parser, "--sequenceDistance", default=100,
+                     help="Maximum sequence distance for UMI correction")
+
+parser <- add_option(parser, "--inputsFolder",
+                     help="Folder with FastQ files to parse")
+
+parser <- add_option(parser, "--outputsFolder",
+                     help="Folder to write the output to")
+
+
+########## Parse the command line options ##########
+args <- parse_args(parser)
+pairedData = args$pairedData
+UMIlocation = args$UMIlocation
+UMIlength = args$UMIlength
+sequenceLength = args$sequenceLength
+countsCutoff = args$countsCutoff
+UMIdistance = args$UMIdistance
+sequenceDistance = args$sequenceDistance
+inputsFolder = args$inputsFolder
+outputsFolder = args$outputsFolder
+
+
+########## Loading libraries (slow) ##########
 library(tidyverse)
 library(data.table)
 library(ShortRead)
@@ -9,44 +66,7 @@ library(Biostrings)
 library(stringdist)
 library(pryr)
 
-rm(list = ls())
-
-source("./casesWorkflows.R")
-source(".//functions.R")
-
-########## Inputs ##########
-
-#type of data - paired or single
-pairedData <- TRUE
-
-#UMI located in Read1 --> "R1"
-#UMI located in Read1 and Read2 --> "R1 & R2"
-UMIlocation <- "R1 & R2"
-
-#length of the UMI
-UMIlength <- 12 #5
-
-#length of th sequence
-sequenceLength <- 150
-
-#min read counts per UMI, for initial data cleaning
-countsCutoff <- 1
-
-#max UMI distance for UMI merging
-UMIdistance <- 4
-
-#max sequence distance for UMI correction
-sequenceDistance <- 100
-
-#inputs folder / working directory
-inputsFolder <- "D:/UMICStuff/Ioannina_Stella/"
-
-#outputs folder
-outputsFolder <- "D:/UMICStuff/Ioannina_Stella/OUT"
-
 ########## Run the appropriate scenario ##########
-
-
 if (pairedData & UMIlocation == "R1"){   #case 1 -- paired data and UMI only in Read1
   
   inputFiles <- list.files(inputsFolder, pattern = "fastq") 
