@@ -11,38 +11,38 @@ library(pryr)
 
 rm(list = ls())
 
-source("./casesWorkflows.R")
-source(".//functions.R")
+source("R/casesWorkflows.R")
+source("R/functions.R")
 
 ########## Inputs ##########
 
 #type of data - paired or single
-pairedData <- TRUE
+pairedData <- FALSE
 
 #UMI located in Read1 --> "R1"
 #UMI located in Read1 and Read2 --> "R1 & R2"
-UMIlocation <- "R1 & R2"
+UMIlocation <- "R1"
 
 #length of the UMI
-UMIlength <- 12 #5
+UMIlength <- 8 #5
 
 #length of th sequence
-sequenceLength <- 150
+sequenceLength <- 22
 
 #min read counts per UMI, for initial data cleaning
 countsCutoff <- 1
 
 #max UMI distance for UMI merging
-UMIdistance <- 4
+UMIdistance <- 2
 
 #max sequence distance for UMI correction
-sequenceDistance <- 100
+sequenceDistance <- 2
 
 #inputs folder / working directory
-inputsFolder <- "D:/UMICStuff/Ioannina_Stella/"
+inputsFolder <- "data/mycase/"
 
 #outputs folder
-outputsFolder <- "D:/UMICStuff/Ioannina_Stella/OUT"
+outputsFolder <- "data/mycase/out"
 
 ########## Run the appropriate scenario ##########
 

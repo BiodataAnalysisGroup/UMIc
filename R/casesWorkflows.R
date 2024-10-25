@@ -514,6 +514,8 @@ single <- function(filepath1,
       outputsFolder
   )
   
+  newUMIs <- newUMIs[which(!is.na(UMI))]
+  
   rm(intermediate.table)
   memory[4] <-  mem_used()
   #final consensus
